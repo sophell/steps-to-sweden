@@ -225,5 +225,5 @@ with photo_gallery:
         image = Image.open(img_path)
         cols[idx % 3].image(image, caption=caption, width='content')
 
-
-st.caption("Page data last updated: 8th October 2025")
+date = pd.to_datetime("today").strftime("%d %B %Y %H:%M")
+st.caption(f"Page last updated: {date}")
