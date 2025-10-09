@@ -240,8 +240,8 @@ with top_calcs:
             st.success("You're in the lead! 🥇 Keep up the great work!")
         else:
             st.warning(f"You're {gap:.1f} km behind **{leader_name}** (top of the leaderboard) currently.")
-            st.info(f"Assuming the leader keeps up their pace, for you to reach the top by {end_date.strftime('%b %d')}, "
-                    f"you’ll need to average **{daily_goal_dynamic:.2f} km/day**.")
+            st.info(f"Assuming you and the leader both keep up your current paces, you will end up {gap_to_projected_leader}km behind. For you to reach the top by {end_date.strftime('%b %d')}, "
+                    f"you’ll need to average **{daily_goal_dynamic:.1f} km/day**.")
 
 
     
