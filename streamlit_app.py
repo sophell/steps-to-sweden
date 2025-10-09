@@ -18,7 +18,7 @@ st.set_page_config(layout="centered")
 ####### UPDATE THESE VALUES #######
 current_distance = 0  # km
 current_donations = 0  # GBP
-number_participants = 9
+number_participants = 12
 leaderboard_df = pd.read_csv("Tracker-2025-10-08.csv")
 
 milestones = {
@@ -69,6 +69,7 @@ distance_progress = st.container()
 dist_calcs = st.container()
 st.divider()
 leaderboard_container = st.container()
+top_calcs = st.container()
 st.divider()
 photo_gallery = st.container()
 
@@ -176,11 +177,12 @@ with dist_calcs:
 ## LEADERBOARD SECTION ###
 with leaderboard_container:
     st.header("Distance Leaderboard")
-    leaderboard_df = leaderboard_df.sort_values(by="DISTANCE", ascending=False).reset_index(drop=True)
+    leader_df = leaderboard_df.sort_values(by="DISTANCE", ascending=False).reset_index(drop=True)
+    leader_df["RANK"] = leader_df.index + 1
 
     # Create Plotly bar chart
     fig = px.bar(
-        leaderboard_df,
+        leader_df,
         x="DISTANCE",
         y="NAME",
         orientation='h',  # Horizontal bars
@@ -203,6 +205,46 @@ with leaderboard_container:
     # Display in Streamlit
     st.plotly_chart(fig, config={"responsive": True})
 
+with top_calcs:
+    with st.expander("Click for more details"):
+        st.subheader("🏆 How Far to the Top?")
+        # User selection
+        selected_name = st.selectbox("Select your name:", leaderboard_df["NAME"])
+        user_row = leader_df[leader_df["NAME"] == selected_name].iloc[0]
+        user_distance = user_row["DISTANCE"]
+        user_rank = user_row["RANK"]
+
+        # Leader info
+        leader_name = leader_df.iloc[0]["NAME"]
+        leader_distance = leader_df.iloc[0]["DISTANCE"]
+
+        # Estimate leader's daily pace so far
+        # days_elapsed = (date.today() - start_date).days
+        days_elapsed = 1
+        leader_pace = leader_distance / days_elapsed
+
+        # Predict where leader will be at the end
+        leader_projected_total = leader_distance + (leader_pace * days_remaining)
+        
+        gap = max(0, leader_distance - user_distance)
+
+        gap_to_projected_leader = leader_projected_total - user_distance
+        daily_goal_dynamic = gap_to_projected_leader / days_remaining
+
+        # Display results
+        st.markdown(f"**{selected_name}**, you're currently in position #{user_rank} 🏅")
+        st.metric("Your total distance", f"{user_distance:.1f} km")
+        st.metric("Days left in challenge", f"{days_remaining} days")
+
+        if user_rank == 1:
+            st.success("You're in the lead! 🥇 Keep up the great work!")
+        else:
+            st.warning(f"You're {gap:.1f} km behind **{leader_name}** (top of the leaderboard) currently.")
+            st.info(f"Assuming the leader keeps up their pace, for you to reach the top by {end_date.strftime('%b %d')}, "
+                    f"you’ll need to average **{daily_goal_dynamic:.2f} km/day**.")
+
+
+    
 ##########################################################################################################
 ##### PHOTO SECTION #####
 with photo_gallery:
