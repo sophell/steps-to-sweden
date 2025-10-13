@@ -18,8 +18,8 @@ st.set_page_config(layout="centered")
 ####### UPDATE THESE VALUES #######
 current_distance = 0  # km
 current_donations = 0  # GBP
-number_participants = 12
-leaderboard_df = pd.read_csv("Tracker-2025-10-08.csv")
+leaderboard_df = pd.read_csv("2025-10-13.csv")
+number_participants = len(leaderboard_df)
 
 milestones = {
     "Belfast": "14th October",
@@ -156,7 +156,7 @@ with dist_calcs:
         km2.metric("Daily Distance Needed per Person", f"{avg_per_person:.1f} km")
 
         height_cm = st.number_input(
-            "Enter your height (cm) to see this distance as steps:",
+            "Enter your height (cm) to see this distance as steps (approximately):",
             min_value=100,
             max_value=250,
             value=170,  # default value
