@@ -16,7 +16,7 @@ st.sidebar.markdown("[Donation Log (Participants Only)](https://bit.ly/s2s-donat
 st.set_page_config(layout="centered")
 
 ####### UPDATE THESE VALUES #######
-today_date = '15 October 2025 14:25'
+today_date = '15 October 2025 14:29'
 current_distance = 150  # km
 current_donations = 638  # GBP
 map_image = Image.open("Completed Oct-15.png")
