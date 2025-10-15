@@ -18,6 +18,7 @@ st.set_page_config(layout="centered")
 ####### UPDATE THESE VALUES #######
 current_distance = 106  # km
 current_donations = 638  # GBP
+map_image = Image.open("Completed Oct-15.png")
 leaderboard_df = pd.read_csv("2025-10-15.csv")
 number_participants = len(leaderboard_df)
 
@@ -81,8 +82,7 @@ with distance_progress:
     col1, col2 = st.columns([3,1], vertical_alignment="center")
 
     with col1:
-        image = Image.open("Dashboard - Map 1.png")
-        st.image(image, width='content')   
+        st.image(map_image, width='content')   
     
     with col2:
         goal_distance = 2650  # km
