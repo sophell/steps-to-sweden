@@ -24,18 +24,18 @@ leaderboard_df = pd.read_csv("2025-10-15.csv")
 number_participants = len(leaderboard_df)
 
 milestones = {
-    "Belfast": "14th October",
-    "Dublin": "",
-    "Liverpool": "",
-    "London": "",
-    "Calais": "",
-    "Antwerp": "",
-    "Münster": "",
-    "Hamburg": "",
-    "Copenhagen": "",
-    "Malmö": "",
-    "Jönköping": "",
-    "Stockholm": ""
+    "Belfast (0km)": "14th October",
+    "Dublin (170km)": "",
+    "Liverpool (440km)": "",
+    "London (775km)": "",
+    "Calais (925km)": "",
+    "Antwerp (1140km)": "",
+    "Münster (1410km)": "",
+    "Hamburg (1680km)": "",
+    "Copenhagen (2000km)": "",
+    "Malmö (2040km)": "",
+    "Jönköping (2340km)": "",
+    "Stockholm (2650km)": ""
     }
 
 end_date = pd.to_datetime("2025-11-04")
