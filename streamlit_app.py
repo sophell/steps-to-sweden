@@ -78,6 +78,8 @@ photo_gallery = st.container()
 # DISTANCE SECTION ###
 with distance_progress:
     st.header("Distance Progress")
+    bst_date = pd.to_datetime("today").tz_localize("UTC").tz_convert("Europe/London").strftime("%d %B %Y %H:%M")
+    st.caption(f"Page last updated: {bst_date}")
 
     col1, col2 = st.columns([3,1], vertical_alignment="center")
 
@@ -267,6 +269,3 @@ with photo_gallery:
         image = Image.open(path)
         cols[idx % 3].image(image, caption=caption, width='content')
 
-
-bst_date = pd.to_datetime("today").tz_localize("UTC").tz_convert("Europe/London").strftime("%d %B %Y %H:%M")
-st.caption(f"Page last updated: {bst_date}")
