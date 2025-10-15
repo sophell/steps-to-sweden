@@ -211,39 +211,42 @@ with leaderboard_container:
 with top_calcs:
     st.subheader("🏆 How Far to the Top?")
     # User selection
-    selected_name = st.selectbox("Select your name:", leaderboard_df["NAME"])
-    user_row = leader_df[leader_df["NAME"] == selected_name].iloc[0]
-    user_distance = user_row["DISTANCE"]
-    user_rank = user_row["RANK"]
-
-    # Leader info
-    leader_name = leader_df.iloc[0]["NAME"]
-    leader_distance = leader_df.iloc[0]["DISTANCE"]
-
-    # Estimate leader's daily pace so far
-    # days_elapsed = (date.today() - start_date).days
-    days_elapsed = 1
-    leader_pace = leader_distance / days_elapsed
-
-    # Predict where leader will be at the end
-    leader_projected_total = leader_distance + (leader_pace * days_remaining)
-    
-    gap = max(0, leader_distance - user_distance)
-
-    gap_to_projected_leader = leader_projected_total - user_distance
-    daily_goal_dynamic = gap_to_projected_leader / days_remaining
-
-    # Display results
-    st.markdown(f"**{selected_name}**, you're currently in position #{user_rank} 🏅")
-    st.metric("Your total distance", f"{user_distance:.1f} km")
-    st.metric("Days left in challenge", f"{days_remaining} days")
-
-    if user_rank == 1:
-        st.success("You're in the lead! 🥇 Keep up the great work!")
+    selected_name = st.selectbox("Select your name:", leaderboard_df["NAME"], index=None)
+    if selected_name is None:
+        st.write(" ")
     else:
-        st.warning(f"You're {gap:.1f} km behind **{leader_name}** (top of the leaderboard) currently.")
-        st.info(f"Assuming you and the leader both keep up your current paces, you will end up {gap_to_projected_leader:.1f}km behind. For you to reach the top by {end_date.strftime('%b %d')}, "
-                f"you’ll need to average **{daily_goal_dynamic:.1f} km/day**.")
+        user_row = leader_df[leader_df["NAME"] == selected_name].iloc[0]
+        user_distance = user_row["DISTANCE"]
+        user_rank = user_row["RANK"]
+
+        # Leader info
+        leader_name = leader_df.iloc[0]["NAME"]
+        leader_distance = leader_df.iloc[0]["DISTANCE"]
+
+        # Estimate leader's daily pace so far
+        # days_elapsed = (date.today() - start_date).days
+        days_elapsed = 1
+        leader_pace = leader_distance / days_elapsed
+
+        # Predict where leader will be at the end
+        leader_projected_total = leader_distance + (leader_pace * days_remaining)
+        
+        gap = max(0, leader_distance - user_distance)
+
+        gap_to_projected_leader = leader_projected_total - user_distance
+        daily_goal_dynamic = gap_to_projected_leader / days_remaining
+
+        # Display results
+        st.markdown(f"**{selected_name}**, you're currently in position #{user_rank} 🏅")
+        st.metric("Your total distance", f"{user_distance:.1f} km")
+        st.metric("Days left in challenge", f"{days_remaining} days")
+
+        if user_rank == 1:
+            st.success("You're in the lead! 🥇 Keep up the great work!")
+        else:
+            st.warning(f"You're {gap:.1f} km behind **{leader_name}** (top of the leaderboard) currently.")
+            st.info(f"Assuming you and the leader both keep up your current paces, you will end up {gap_to_projected_leader:.1f}km behind. For you to reach the top by {end_date.strftime('%b %d')}, "
+                    f"you’ll need to average **{daily_goal_dynamic:.1f} km/day**.")
 
 
     
