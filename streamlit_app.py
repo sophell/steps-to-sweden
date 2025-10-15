@@ -16,9 +16,9 @@ st.sidebar.markdown("[Donation Log (Participants Only)](https://bit.ly/s2s-donat
 st.set_page_config(layout="centered")
 
 ####### UPDATE THESE VALUES #######
-current_distance = 0  # km
-current_donations = 0  # GBP
-leaderboard_df = pd.read_csv("2025-10-13.csv")
+current_distance = 106  # km
+current_donations = 638  # GBP
+leaderboard_df = pd.read_csv("2025-10-15.csv")
 number_participants = len(leaderboard_df)
 
 milestones = {
@@ -28,7 +28,7 @@ milestones = {
     "London": "",
     "Calais": "",
     "Antwerp": "",
-    "Munster": "",
+    "Münster": "",
     "Hamburg": "",
     "Copenhagen": "",
     "Malmö": "",
@@ -206,42 +206,41 @@ with leaderboard_container:
     st.plotly_chart(fig, config={"responsive": True})
 
 with top_calcs:
-    with st.expander("Click for more details"):
-        st.subheader("🏆 How Far to the Top?")
-        # User selection
-        selected_name = st.selectbox("Select your name:", leaderboard_df["NAME"])
-        user_row = leader_df[leader_df["NAME"] == selected_name].iloc[0]
-        user_distance = user_row["DISTANCE"]
-        user_rank = user_row["RANK"]
+    st.subheader("🏆 How Far to the Top?")
+    # User selection
+    selected_name = st.selectbox("Select your name:", leaderboard_df["NAME"])
+    user_row = leader_df[leader_df["NAME"] == selected_name].iloc[0]
+    user_distance = user_row["DISTANCE"]
+    user_rank = user_row["RANK"]
 
-        # Leader info
-        leader_name = leader_df.iloc[0]["NAME"]
-        leader_distance = leader_df.iloc[0]["DISTANCE"]
+    # Leader info
+    leader_name = leader_df.iloc[0]["NAME"]
+    leader_distance = leader_df.iloc[0]["DISTANCE"]
 
-        # Estimate leader's daily pace so far
-        # days_elapsed = (date.today() - start_date).days
-        days_elapsed = 1
-        leader_pace = leader_distance / days_elapsed
+    # Estimate leader's daily pace so far
+    # days_elapsed = (date.today() - start_date).days
+    days_elapsed = 1
+    leader_pace = leader_distance / days_elapsed
 
-        # Predict where leader will be at the end
-        leader_projected_total = leader_distance + (leader_pace * days_remaining)
-        
-        gap = max(0, leader_distance - user_distance)
+    # Predict where leader will be at the end
+    leader_projected_total = leader_distance + (leader_pace * days_remaining)
+    
+    gap = max(0, leader_distance - user_distance)
 
-        gap_to_projected_leader = leader_projected_total - user_distance
-        daily_goal_dynamic = gap_to_projected_leader / days_remaining
+    gap_to_projected_leader = leader_projected_total - user_distance
+    daily_goal_dynamic = gap_to_projected_leader / days_remaining
 
-        # Display results
-        st.markdown(f"**{selected_name}**, you're currently in position #{user_rank} 🏅")
-        st.metric("Your total distance", f"{user_distance:.1f} km")
-        st.metric("Days left in challenge", f"{days_remaining} days")
+    # Display results
+    st.markdown(f"**{selected_name}**, you're currently in position #{user_rank} 🏅")
+    st.metric("Your total distance", f"{user_distance:.1f} km")
+    st.metric("Days left in challenge", f"{days_remaining} days")
 
-        if user_rank == 1:
-            st.success("You're in the lead! 🥇 Keep up the great work!")
-        else:
-            st.warning(f"You're {gap:.1f} km behind **{leader_name}** (top of the leaderboard) currently.")
-            st.info(f"Assuming you and the leader both keep up your current paces, you will end up {gap_to_projected_leader}km behind. For you to reach the top by {end_date.strftime('%b %d')}, "
-                    f"you’ll need to average **{daily_goal_dynamic:.1f} km/day**.")
+    if user_rank == 1:
+        st.success("You're in the lead! 🥇 Keep up the great work!")
+    else:
+        st.warning(f"You're {gap:.1f} km behind **{leader_name}** (top of the leaderboard) currently.")
+        st.info(f"Assuming you and the leader both keep up your current paces, you will end up {gap_to_projected_leader:.1f}km behind. For you to reach the top by {end_date.strftime('%b %d')}, "
+                f"you’ll need to average **{daily_goal_dynamic:.1f} km/day**.")
 
 
     
@@ -251,21 +250,23 @@ with photo_gallery:
     st.header("Photo Gallery")
 
     images = [
+        "SophieE_1.png",
         "Photo1.png",
-        "Photo2.png",
-        "Photo3.png"
+        "Photo2.png"
     ]
     captions = [
+        "A rare sight: Isaac willingly going for a walk",
         "Caption for Photo 1",
-        "Caption for Photo 2",
-        "Caption for Photo 3"
+        "Caption for Photo 2"
     ]
 
     cols = st.columns(3)  # Adjust number of columns as needed
 
     for idx, (img_path, caption) in enumerate(zip(images, captions)):
-        image = Image.open(img_path)
+        path = "photos/" + img_path
+        image = Image.open(path)
         cols[idx % 3].image(image, caption=caption, width='content')
 
-date = pd.to_datetime("today").strftime("%d %B %Y %H:%M")
-st.caption(f"Page last updated: {date}")
+
+bst_date = pd.to_datetime("today").tz_localize("UTC").tz_convert("Europe/London").strftime("%d %B %Y %H:%M")
+st.caption(f"Page last updated: {bst_date}")
