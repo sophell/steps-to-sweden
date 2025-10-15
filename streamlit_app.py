@@ -16,6 +16,7 @@ st.sidebar.markdown("[Donation Log (Participants Only)](https://bit.ly/s2s-donat
 st.set_page_config(layout="centered")
 
 ####### UPDATE THESE VALUES #######
+today_date = '15 October 2025 11:14'
 current_distance = 106  # km
 current_donations = 638  # GBP
 map_image = Image.open("Completed Oct-15.png")
@@ -79,7 +80,7 @@ photo_gallery = st.container()
 with distance_progress:
     st.header("Distance Progress")
     bst_date = pd.to_datetime("today").tz_localize("UTC").tz_convert("Europe/London").strftime("%d %B %Y %H:%M")
-    st.caption(f"Page last updated: {bst_date}")
+    st.caption(f"Page last updated: {today_date}")
 
     col1, col2 = st.columns([3,1], vertical_alignment="center")
 
