@@ -16,17 +16,16 @@ st.sidebar.markdown("[Donation Log (Participants Only)](https://bit.ly/s2s-donat
 st.set_page_config(layout="centered")
 
 ####### UPDATE THESE VALUES #######
-today_date = '16 October 2025 12:50'
-current_distance = 310  # km
-current_donations = 762  # GBP
+today_date = '17 October 2025 20:51'
+current_distance = 447  # km
 map_image = Image.open("Completed Oct-16.png")
-leaderboard_df = pd.read_csv("2025-10-16.csv")
+leaderboard_df = pd.read_csv("2025-10-17.csv")
 number_participants = len(leaderboard_df)
 
 milestones = {
     "Belfast (0km)": "14th October",
     "Dublin (165km)": "15th October",
-    "Liverpool (440km)": "",
+    "Liverpool (440km)": "16th October",
     "London (775km)": "",
     "Calais (925km)": "",
     "Antwerp (1140km)": "",
@@ -278,14 +277,14 @@ with photo_gallery:
     st.header("Photo Gallery")
 
     images = [
+        "Photo1 - Jov.png",
         "SophieE_1.png",
-        "Photo1.png",
-        "Photo2.png"
+        "Photo2 - Hannah.png"
     ]
     captions = [
+        "Jov in the park",
         "A rare sight: Isaac willingly going for a walk",
-        "Caption for Photo 1",
-        "Caption for Photo 2"
+        "How did this get here..?"
     ]
 
     cols = st.columns(3)  # Adjust number of columns as needed
