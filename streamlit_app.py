@@ -282,12 +282,14 @@ with photo_gallery:
     images = [
         "Photo1 - Jov.png",
         "SophieE_1.png",
-        "Photo2 - Hannah.png"
+        "Photo2 - Hannah.png",
+        "Photo3 - Jov.png"
     ]
     captions = [
-        "Jov in the park",
+        "In the park - Jov",
         "A rare sight: Isaac willingly going for a walk",
-        "How did this get here..?"
+        "How did this get here..?",
+        "Park, iced latte, traybake, duolingo - Jov"
     ]
 
     cols = st.columns(3)  # Adjust number of columns as needed
