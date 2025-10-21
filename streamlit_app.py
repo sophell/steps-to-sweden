@@ -218,57 +218,60 @@ with top_calcs:
         user_distance = user_row["DISTANCE"]
         user_rank = user_row["RANK"]
 
-        # Leader info
-        leader_name = leader_df.iloc[0]["NAME"]
-        leader_distance = leader_df.iloc[0]["DISTANCE"]
-
-        # Example: pre-defined elsewhere
-        # start_date = datetime.date(2025, 10, 1)
-        # end_date = datetime.date(2025, 10, 22)
-        # days_elapsed = (date.today() - start_date).days
-        # For testing, you can force:
-        days_elapsed = 2
+        days_elapsed = 21 - days_remaining
         total_days = 21
-        days_remaining = total_days - days_elapsed
-
-        # --- Pace calculations ---
-        leader_pace = leader_distance / days_elapsed if days_elapsed > 0 else 0
-        user_pace = user_distance / days_elapsed if days_elapsed > 0 else 0
-
-        # Projected totals if both continue at current paces
-        leader_projected_total = leader_distance + (leader_pace * days_remaining)
-        user_projected_total = user_distance + (user_pace * days_remaining)
-
-        # --- Gaps ---
-        current_gap = max(0, leader_distance - user_distance)
-        projected_gap = max(0, leader_projected_total - user_projected_total)
-
-        # --- Required pace to catch the leader by the end ---
-        # This is the total average pace needed from now on
-        target_total_pace = (leader_projected_total - user_distance) / days_remaining
-        # Extra above current average
-        extra_needed_per_day = target_total_pace - user_pace
 
         # --- Display results ---
         st.markdown(f"**{selected_name}**, you're currently in position #{user_rank} 🏅")
         st.metric("Your Total Distance", f"{user_distance:.1f} km")
         st.metric("Daily Average", f"{user_distance/days_elapsed:.1f} km/day")
 
-        if user_rank == 1:
-            st.success("You're in the lead! 🥇 Keep up the great work!")
+        #### CALCULATE DISTANCE TO SELECTED PERSON ####
+        selected_chase = st.selectbox("Who do you want to catch up to?", leader_df['NAME'][leader_df['RANK'] < user_rank], index=None)
+        
+        if selected_chase is None:
+            st.write(" ")
+        
         else:
-            st.warning(
-                f"You're {current_gap:.1f} km behind **{leader_name}** currently."
-            )
-            st.info(
-                f"Assuming you both keep up your current paces, "
-                f"you will finish about **{projected_gap:.1f} km** behind the leader's projected total "
-                f"of **{leader_projected_total:.1f} km**.\n\n"
-                f"To reach the top by {end_date.strftime('%b %d')}, "
-                f"you need to average **{target_total_pace:.1f} km/day** "
-                f"for the rest of the challenge - "
-                f"that’s about **{extra_needed_per_day:.1f} km/day** above your current pace."
-            )
+            # Leader info
+            leader_row = leader_df[leader_df["NAME"] == selected_chase].iloc[0]
+            leader_name = leader_row["NAME"]
+            leader_distance = leader_row["DISTANCE"]
+            leader_rank = leader_row["RANK"]
+
+            # --- Pace calculations ---
+            leader_pace = leader_distance / days_elapsed if days_elapsed > 0 else 0
+            user_pace = user_distance / days_elapsed if days_elapsed > 0 else 0
+
+            # Projected totals if both continue at current paces
+            leader_projected_total = leader_distance + (leader_pace * days_remaining)
+            user_projected_total = user_distance + (user_pace * days_remaining)
+
+            # --- Gaps ---
+            current_gap = max(0, leader_distance - user_distance)
+            projected_gap = max(0, leader_projected_total - user_projected_total)
+
+            # --- Required pace to catch the leader by the end ---
+            # This is the total average pace needed from now on
+            target_total_pace = (leader_projected_total - user_distance) / days_remaining
+            # Extra above current average
+            extra_needed_per_day = target_total_pace - user_pace
+
+            if user_rank == 1:
+                st.success("You're in the lead! 🥇 Keep up the great work!")
+            else:
+                st.warning(
+                    f"You're {current_gap:.1f} km behind **{leader_name}** currently."
+                )
+                st.info(
+                    f"Assuming you both keep up your current paces, "
+                    f"you will finish about **{projected_gap:.1f} km** behind the leader's projected total "
+                    f"of **{leader_projected_total:.1f} km**.\n\n"
+                    f"To reach the top by {end_date.strftime('%b %d')}, "
+                    f"you need to average **{target_total_pace:.1f} km/day** "
+                    f"for the rest of the challenge - "
+                    f"that’s about **{extra_needed_per_day:.1f} km/day** above your current pace."
+                )
 
     
 ##########################################################################################################
