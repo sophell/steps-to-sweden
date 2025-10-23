@@ -18,7 +18,7 @@ st.set_page_config(layout="centered")
 
 ####### UPDATE THESE VALUES #######
 today_date = '23 October 2025 18:10'
-current_distance = 1320  # km
+current_distance = 1327  # km
 map_image = Image.open("Completed Oct-22.png")
 leaderboard_df = pd.read_csv("2025-10-22.csv")
 leaderboard_df = leaderboard_df[leaderboard_df['DISTANCE'] > 0]
