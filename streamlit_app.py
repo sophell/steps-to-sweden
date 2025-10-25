@@ -17,10 +17,10 @@ st.sidebar.markdown("[Donation Log (Participants Only)](https://bit.ly/s2s-donat
 st.set_page_config(layout="centered")
 
 ####### UPDATE THESE VALUES #######
-today_date = '23 October 2025 18:10'
-current_distance = 1327  # km
-map_image = Image.open("Completed Oct-22.png")
-leaderboard_df = pd.read_csv("2025-10-22.csv")
+today_date = '25 October 2025 17:23'
+current_distance = 1513  # km
+map_image = Image.open("Completed Oct-24.png")
+leaderboard_df = pd.read_csv("2025-10-24.csv")
 leaderboard_df = leaderboard_df[leaderboard_df['DISTANCE'] > 0]
 number_participants = len(leaderboard_df)
 
@@ -31,7 +31,7 @@ milestones = {
     "London (775km)": "19th October",
     "Calais (925km)": "20th October",
     "Antwerp (1140km)": "21st October",
-    "Münster (1410km)": "",
+    "Münster (1410km)": "23rd October",
     "Hamburg (1680km)": "",
     "Copenhagen (2000km)": "",
     "Malmö (2040km)": "",
