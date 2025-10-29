@@ -17,10 +17,10 @@ st.sidebar.markdown("[Donation Log (Participants Only)](https://bit.ly/s2s-donat
 st.set_page_config(layout="centered")
 
 ####### UPDATE THESE VALUES #######
-today_date = '25 October 2025 17:23'
-current_distance = 1513  # km
-map_image = Image.open("Completed Oct-24.png")
-leaderboard_df = pd.read_csv("2025-10-24.csv")
+today_date = '29 October 2025 15:04'
+current_distance = 2032  # km
+map_image = Image.open("Completed Oct-28.png")
+leaderboard_df = pd.read_csv("2025-10-28.csv")
 leaderboard_df = leaderboard_df[leaderboard_df['DISTANCE'] > 0]
 number_participants = len(leaderboard_df)
 
@@ -32,9 +32,9 @@ milestones = {
     "Calais (925km)": "20th October",
     "Antwerp (1140km)": "21st October",
     "Münster (1410km)": "23rd October",
-    "Hamburg (1680km)": "",
-    "Copenhagen (2000km)": "",
-    "Malmö (2040km)": "",
+    "Hamburg (1680km)": "25th October",
+    "Copenhagen (2000km)": "28th October",
+    "Malmö (2040km)": "28th October",
     "Jönköping (2340km)": "",
     "Stockholm (2650km)": ""
     }
@@ -287,16 +287,21 @@ with photo_gallery:
     st.header("Photo Gallery")
 
     images = [
-        "Photo1 - Jov.png",
-        "SophieE_1.png",
+        "Photo4 - Isaac.png",
         "Photo2 - Hannah.png",
-        "Photo3 - Jov.png"
+        "Photo3 - Jov.png",
+        "Photo5 - Jov.png",
+        "Photo6 - Bean.png",
+        "Photo7 - Iain.png"
+
     ]
     captions = [
-        "In the park - Jov",
         "A rare sight: Isaac willingly going for a walk",
         "How did this get here..?",
-        "Park, iced latte, traybake, duolingo - Jov"
+        "Park, iced latte, traybake, duolingo - Jov",
+        "Gray sky and a cup of chai - Jov",
+        "A 'two horse race'",
+        "Iain (the) Black (sheep)"
     ]
 
     cols = st.columns(3)  # Adjust number of columns as needed
