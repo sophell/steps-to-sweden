@@ -296,10 +296,10 @@ with photo_gallery:
 
     ]
     captions = [
-        "A rare sight: Isaac willingly going for a walk",
+        "A rare sight: Isaac walking for fun",
         "How did this get here..?",
-        "Park, iced latte, traybake, duolingo - Jov",
-        "Gray sky and a cup of chai - Jov",
+        "Park, iced latte, traybake, duolingo",
+        "Gray sky and a cup of chai",
         "A 'two horse race'",
         "Iain (the) Black (sheep)"
     ]
