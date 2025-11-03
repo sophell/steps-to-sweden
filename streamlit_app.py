@@ -17,10 +17,10 @@ st.sidebar.markdown("[Donation Log (Participants Only)](https://bit.ly/s2s-donat
 st.set_page_config(layout="centered")
 
 ####### UPDATE THESE VALUES #######
-today_date = '29 October 2025 15:04'
-current_distance = 2032  # km
-map_image = Image.open("Completed Oct-28.png")
-leaderboard_df = pd.read_csv("2025-10-28.csv")
+today_date = '03 November 2025 08:05'
+current_distance = 2554  # km
+map_image = Image.open("Completed Nov-02.png")
+leaderboard_df = pd.read_csv("2025-11-03.csv")
 leaderboard_df = leaderboard_df[leaderboard_df['DISTANCE'] > 0]
 number_participants = len(leaderboard_df)
 
@@ -35,11 +35,11 @@ milestones = {
     "Hamburg (1680km)": "25th October",
     "Copenhagen (2000km)": "28th October",
     "Malmö (2040km)": "28th October",
-    "Jönköping (2340km)": "",
+    "Jönköping (2340km)": "31st October",
     "Stockholm (2650km)": ""
     }
 
-end_date = pd.to_datetime("2025-11-04 23:59")
+end_date = pd.to_datetime("2025-11-03 23:59")
 start_date = pd.to_datetime("2025-10-14 00:00")
 
 if pd.to_datetime("today") > start_date:
@@ -47,6 +47,7 @@ if pd.to_datetime("today") > start_date:
     time_diff = end_date - pd.to_datetime(bst_date)
     days_remaining = time_diff.days
     hours_remaining = time_diff.seconds // 3600
+    minutes_remaining = (time_diff.seconds % 3600) // 60
     days_remaining_exact = time_diff.total_seconds() / (24 * 3600)
     total_days_left = math.ceil(days_remaining_exact)
 else:
@@ -154,7 +155,7 @@ with dist_calcs:
     total_per_person = dist_remaining / number_participants
 
     metric1, metric2, metric3 = st.columns(3)
-    metric1.metric("Time Remaining", f"{days_remaining} days {hours_remaining} hrs")
+    metric1.metric("Time Remaining", f"{days_remaining} days {hours_remaining} hrs {minutes_remaining} mins")
     metric2.metric("Distance Remaining", f"{dist_remaining} km")
     metric3.metric("Avg Distance per Day", f"{avg_daily_dist:.1f} km")
 
@@ -224,14 +225,16 @@ with top_calcs:
         user_row = leader_df[leader_df["NAME"] == selected_name].iloc[0]
         user_distance = user_row["DISTANCE"]
         user_rank = user_row["RANK"]
+        days_submitted = user_row["DAYS SUBMITTED"]
 
-        days_elapsed = 21 - days_remaining
+        days_elapsed = 21 - total_days_left
         total_days = 21
 
         # --- Display results ---
         st.markdown(f"**{selected_name}**, you're currently in position #{user_rank} 🏅")
         st.metric("Your Total Distance", f"{user_distance:.1f} km")
-        st.metric("Daily Average", f"{user_distance/days_elapsed:.1f} km/day")
+        st.metric("Daily Average", f"{user_distance/days_submitted:.1f} km/day")
+        st.markdown(f"from {days_submitted:.0f} days of submissions.")
 
         #### CALCULATE DISTANCE TO SELECTED PERSON ####
         selected_chase = st.selectbox("Who do you want to catch up to?", leader_df['NAME'][leader_df['RANK'] < user_rank], index=None)
@@ -245,10 +248,11 @@ with top_calcs:
             leader_name = leader_row["NAME"]
             leader_distance = leader_row["DISTANCE"]
             leader_rank = leader_row["RANK"]
+            leader_days_submitted = leader_row["DAYS SUBMITTED"]
 
             # --- Pace calculations ---
-            leader_pace = leader_distance / days_elapsed if days_elapsed > 0 else 0
-            user_pace = user_distance / days_elapsed if days_elapsed > 0 else 0
+            leader_pace = leader_distance / leader_days_submitted if days_elapsed > 0 else 0
+            user_pace = user_distance / days_submitted if days_submitted > 0 else 0
 
             # Projected totals if both continue at current paces
             leader_projected_total = leader_distance + (leader_pace * days_remaining)
@@ -259,16 +263,18 @@ with top_calcs:
             projected_gap = max(0, leader_projected_total - user_projected_total)
 
             # --- Required pace to catch the leader by the end ---
-            # This is the total average pace needed from now on
-            target_total_pace = (leader_projected_total - user_distance) / days_remaining
-            # Extra above current average
-            extra_needed_per_day = target_total_pace - user_pace
+            if days_remaining_exact > 0:
+                target_total_pace = (leader_projected_total - user_distance) / days_remaining_exact
+                extra_needed_per_day = target_total_pace - user_pace
+            else:
+                target_total_pace = float('nan')
+                extra_needed_per_day = float('nan')
 
             if user_rank == 1:
                 st.success("You're in the lead! 🥇 Keep up the great work!")
             else:
                 st.warning(
-                    f"You're {current_gap:.1f} km behind **{leader_name}** currently."
+                    f"You're {current_gap:.1f} km behind **{leader_name}** currently. They have submitted {leader_days_submitted:.0f} days of distances."
                 )
                 st.info(
                     f"Assuming you both keep up your current paces, "
@@ -276,10 +282,9 @@ with top_calcs:
                     f"of **{leader_projected_total:.1f} km**.\n\n"
                     f"To reach the top by {end_date.strftime('%b %d')}, "
                     f"you need to average **{target_total_pace:.1f} km/day** "
-                    f"for the rest of the challenge - "
+                    f"for the remaining {total_days_left} day(s) - "
                     f"that’s about **{extra_needed_per_day:.1f} km/day** above your current pace."
                 )
-
     
 ##########################################################################################################
 ##### PHOTO SECTION #####
