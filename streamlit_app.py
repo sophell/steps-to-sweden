@@ -155,7 +155,11 @@ with dist_calcs:
     total_per_person = dist_remaining / number_participants
 
     metric1, metric2, metric3 = st.columns(3)
-    metric1.metric("Time Remaining", f"{days_remaining} days {hours_remaining} hrs {minutes_remaining} mins")
+    if days_remaining > 0:
+        metric1.metric("Time Remaining", f"{days_remaining} days {hours_remaining} hrs")
+    else:
+        metric1.metric("Time Remaining", f"{hours_remaining} hrs {minutes_remaining} mins")
+
     metric2.metric("Distance Remaining", f"{dist_remaining} km")
     metric3.metric("Avg Distance per Day", f"{avg_daily_dist:.1f} km")
 
