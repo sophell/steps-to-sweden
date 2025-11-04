@@ -17,10 +17,10 @@ st.sidebar.markdown("[Donation Log (Participants Only)](https://bit.ly/s2s-donat
 st.set_page_config(layout="centered")
 
 ####### UPDATE THESE VALUES #######
-today_date = '03 November 2025 08:05'
-current_distance = 2554  # km
-map_image = Image.open("Completed Nov-02.png")
-leaderboard_df = pd.read_csv("2025-11-03.csv")
+today_date = '03 November 2025 22:00'
+current_distance = 2650  # km
+map_image = Image.open("Completed Nov-03.png")
+leaderboard_df = pd.read_csv("2025-11-04.csv")
 leaderboard_df = leaderboard_df[leaderboard_df['DISTANCE'] > 0]
 number_participants = len(leaderboard_df)
 
@@ -36,7 +36,7 @@ milestones = {
     "Copenhagen (2000km)": "28th October",
     "Malmö (2040km)": "28th October",
     "Jönköping (2340km)": "31st October",
-    "Stockholm (2650km)": ""
+    "Stockholm (2650km)": "2nd November"
     }
 
 end_date = pd.to_datetime("2025-11-03 23:59")
@@ -78,7 +78,7 @@ distance_progress = st.container()
 dist_calcs = st.container()
 st.divider()
 leaderboard_container = st.container()
-top_calcs = st.container()
+# top_calcs = st.container()
 st.divider()
 photo_gallery = st.container()
 
@@ -219,76 +219,76 @@ with leaderboard_container:
     # Display in Streamlit
     st.plotly_chart(fig, config={"responsive": True})
 
-with top_calcs:
-    st.subheader("🏆 How Far to the Top?")
-    # User selection
-    selected_name = st.selectbox("Select your name:", leaderboard_df["NAME"], index=None)
-    if selected_name is None:
-        st.write(" ")
-    else:
-        user_row = leader_df[leader_df["NAME"] == selected_name].iloc[0]
-        user_distance = user_row["DISTANCE"]
-        user_rank = user_row["RANK"]
-        days_submitted = user_row["DAYS SUBMITTED"]
+# with top_calcs:
+#     st.subheader("🏆 How Far to the Top?")
+#     # User selection
+#     selected_name = st.selectbox("Select your name:", leaderboard_df["NAME"], index=None)
+#     if selected_name is None:
+#         st.write(" ")
+#     else:
+#         user_row = leader_df[leader_df["NAME"] == selected_name].iloc[0]
+#         user_distance = user_row["DISTANCE"]
+#         user_rank = user_row["RANK"]
+#         days_submitted = user_row["DAYS SUBMITTED"]
 
-        days_elapsed = 21 - total_days_left
-        total_days = 21
+#         days_elapsed = 21 - total_days_left
+#         total_days = 21
 
-        # --- Display results ---
-        st.markdown(f"**{selected_name}**, you're currently in position #{user_rank} 🏅")
-        st.metric("Your Total Distance", f"{user_distance:.1f} km")
-        st.metric("Daily Average", f"{user_distance/days_submitted:.1f} km/day")
-        st.markdown(f"from {days_submitted:.0f} days of submissions.")
+#         # --- Display results ---
+#         st.markdown(f"**{selected_name}**, you're currently in position #{user_rank} 🏅")
+#         st.metric("Your Total Distance", f"{user_distance:.1f} km")
+#         st.metric("Daily Average", f"{user_distance/days_submitted:.1f} km/day")
+#         st.markdown(f"from {days_submitted:.0f} days of submissions.")
 
-        #### CALCULATE DISTANCE TO SELECTED PERSON ####
-        selected_chase = st.selectbox("Who do you want to catch up to?", leader_df['NAME'][leader_df['RANK'] < user_rank], index=None)
+#         #### CALCULATE DISTANCE TO SELECTED PERSON ####
+#         selected_chase = st.selectbox("Who do you want to catch up to?", leader_df['NAME'][leader_df['RANK'] < user_rank], index=None)
         
-        if selected_chase is None:
-            st.write(" ")
+#         if selected_chase is None:
+#             st.write(" ")
         
-        else:
-            # Leader info
-            leader_row = leader_df[leader_df["NAME"] == selected_chase].iloc[0]
-            leader_name = leader_row["NAME"]
-            leader_distance = leader_row["DISTANCE"]
-            leader_rank = leader_row["RANK"]
-            leader_days_submitted = leader_row["DAYS SUBMITTED"]
+#         else:
+#             # Leader info
+#             leader_row = leader_df[leader_df["NAME"] == selected_chase].iloc[0]
+#             leader_name = leader_row["NAME"]
+#             leader_distance = leader_row["DISTANCE"]
+#             leader_rank = leader_row["RANK"]
+#             leader_days_submitted = leader_row["DAYS SUBMITTED"]
 
-            # --- Pace calculations ---
-            leader_pace = leader_distance / leader_days_submitted if days_elapsed > 0 else 0
-            user_pace = user_distance / days_submitted if days_submitted > 0 else 0
+#             # --- Pace calculations ---
+#             leader_pace = leader_distance / leader_days_submitted if days_elapsed > 0 else 0
+#             user_pace = user_distance / days_submitted if days_submitted > 0 else 0
 
-            # Projected totals if both continue at current paces
-            leader_projected_total = leader_distance + (leader_pace * days_remaining)
-            user_projected_total = user_distance + (user_pace * days_remaining)
+#             # Projected totals if both continue at current paces
+#             leader_projected_total = leader_distance + (leader_pace * days_remaining)
+#             user_projected_total = user_distance + (user_pace * days_remaining)
 
-            # --- Gaps ---
-            current_gap = max(0, leader_distance - user_distance)
-            projected_gap = max(0, leader_projected_total - user_projected_total)
+#             # --- Gaps ---
+#             current_gap = max(0, leader_distance - user_distance)
+#             projected_gap = max(0, leader_projected_total - user_projected_total)
 
-            # --- Required pace to catch the leader by the end ---
-            if days_remaining_exact > 0:
-                target_total_pace = (leader_projected_total - user_distance) / days_remaining_exact
-                extra_needed_per_day = target_total_pace - user_pace
-            else:
-                target_total_pace = float('nan')
-                extra_needed_per_day = float('nan')
+#             # --- Required pace to catch the leader by the end ---
+#             if days_remaining_exact > 0:
+#                 target_total_pace = (leader_projected_total - user_distance) / days_remaining_exact
+#                 extra_needed_per_day = target_total_pace - user_pace
+#             else:
+#                 target_total_pace = float('nan')
+#                 extra_needed_per_day = float('nan')
 
-            if user_rank == 1:
-                st.success("You're in the lead! 🥇 Keep up the great work!")
-            else:
-                st.warning(
-                    f"You're {current_gap:.1f} km behind **{leader_name}** currently. They have submitted {leader_days_submitted:.0f} days of distances."
-                )
-                st.info(
-                    f"Assuming you both keep up your current paces, "
-                    f"you will finish about **{projected_gap:.1f} km** behind the leader's projected total "
-                    f"of **{leader_projected_total:.1f} km**.\n\n"
-                    f"To reach the top by {end_date.strftime('%b %d')}, "
-                    f"you need to average **{target_total_pace:.1f} km/day** "
-                    f"for the remaining {total_days_left} day(s) - "
-                    f"that’s about **{extra_needed_per_day:.1f} km/day** above your current pace."
-                )
+#             if user_rank == 1:
+#                 st.success("You're in the lead! 🥇 Keep up the great work!")
+#             else:
+#                 st.warning(
+#                     f"You're {current_gap:.1f} km behind **{leader_name}** currently. They have submitted {leader_days_submitted:.0f} days of distances."
+#                 )
+#                 st.info(
+#                     f"Assuming you both keep up your current paces, "
+#                     f"you will finish about **{projected_gap:.1f} km** behind the leader's projected total "
+#                     f"of **{leader_projected_total:.1f} km**.\n\n"
+#                     f"To reach the top by {end_date.strftime('%b %d')}, "
+#                     f"you need to average **{target_total_pace:.1f} km/day** "
+#                     f"for the remaining {total_days_left} day(s) - "
+#                     f"that’s about **{extra_needed_per_day:.1f} km/day** above your current pace."
+#                 )
     
 ##########################################################################################################
 ##### PHOTO SECTION #####
