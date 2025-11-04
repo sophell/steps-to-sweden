@@ -75,7 +75,7 @@ st.markdown(
 distance_progress = st.container()
 # donation_container = st.container()
 # st.divider()
-dist_calcs = st.container()
+# dist_calcs = st.container()
 st.divider()
 leaderboard_container = st.container()
 # top_calcs = st.container()
@@ -142,48 +142,48 @@ with distance_progress:
 
 ##########################################################################################################
     
-with dist_calcs:
-    # Remaining distance
-    dist_remaining = goal_distance - current_distance
+# with dist_calcs:
+#     # Remaining distance
+#     dist_remaining = goal_distance - current_distance
 
-    # Average distance needed per day
-    avg_daily_dist = dist_remaining / total_days_left
+#     # Average distance needed per day
+#     avg_daily_dist = dist_remaining / total_days_left
 
-    # Average distance per participant
-    avg_per_person = avg_daily_dist / number_participants
+#     # Average distance per participant
+#     avg_per_person = avg_daily_dist / number_participants
 
-    total_per_person = dist_remaining / number_participants
+#     total_per_person = dist_remaining / number_participants
 
-    metric1, metric2, metric3 = st.columns(3)
-    if days_remaining > 0:
-        metric1.metric("Time Remaining", f"{days_remaining} days {hours_remaining} hrs")
-    else:
-        metric1.metric("Time Remaining", f"{hours_remaining} hrs {minutes_remaining} mins")
+#     metric1, metric2, metric3 = st.columns(3)
+#     if days_remaining > 0:
+#         metric1.metric("Time Remaining", f"{days_remaining} days {hours_remaining} hrs")
+#     else:
+#         metric1.metric("Time Remaining", f"{hours_remaining} hrs {minutes_remaining} mins")
 
-    metric2.metric("Distance Remaining", f"{dist_remaining} km")
-    metric3.metric("Avg Distance per Day", f"{avg_daily_dist:.1f} km")
+#     metric2.metric("Distance Remaining", f"{dist_remaining} km")
+#     metric3.metric("Avg Distance per Day", f"{avg_daily_dist:.1f} km")
 
-    with st.expander("Click to calculate distances per participant"):
-        st.text(f"Number of Participants: {number_participants}")
-        km1, km2 = st.columns(2)
-        km1.metric("Total Remaining Distance per Person", f"{total_per_person:.1f} km")
-        km2.metric("Daily Distance Needed per Person", f"{avg_per_person:.1f} km")
+#     with st.expander("Click to calculate distances per participant"):
+#         st.text(f"Number of Participants: {number_participants}")
+#         km1, km2 = st.columns(2)
+#         km1.metric("Total Remaining Distance per Person", f"{total_per_person:.1f} km")
+#         km2.metric("Daily Distance Needed per Person", f"{avg_per_person:.1f} km")
 
-        height_cm = st.number_input(
-            "Enter your height (cm) to see this distance as steps (approximately):",
-            min_value=100,
-            max_value=250,
-            value=170,  # default value
-            step=1
-        )
+#         height_cm = st.number_input(
+#             "Enter your height (cm) to see this distance as steps (approximately):",
+#             min_value=100,
+#             max_value=250,
+#             value=170,  # default value
+#             step=1
+#         )
 
-        stride_length_m = height_cm * 0.415 / 100
-        steps_remaining = total_per_person * 1000 / stride_length_m
-        avg_steps_per_day = steps_remaining / total_days_left
+#         stride_length_m = height_cm * 0.415 / 100
+#         steps_remaining = total_per_person * 1000 / stride_length_m
+#         avg_steps_per_day = steps_remaining / total_days_left
 
-        step1, step2 = st.columns(2)
-        step1.metric("Total Steps Needed", f"{steps_remaining:,.0f}")
-        step2.metric("Avg Steps per Day", f"{avg_steps_per_day:,.0f}")
+#         step1, step2 = st.columns(2)
+#         step1.metric("Total Steps Needed", f"{steps_remaining:,.0f}")
+#         step2.metric("Avg Steps per Day", f"{avg_steps_per_day:,.0f}")
 
 
 ##########################################################################################################
